@@ -44,15 +44,15 @@ Crema Task Manager is an interactive web application that helps teams organize a
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose | Version |
-|------------|---------|---------|
-| **React** | UI framework for component-based architecture | 18.0.0 |
-| **Tailwind CSS** | Utility-first CSS framework for rapid styling | 3.0.24 |
-| **Material-UI** | Component library for polished UI elements | 5.6.3 |
-| **Formik** | Form state management and validation | 2.2.9 |
-| **Yup** | Schema-based validation | 0.32.11 |
-| **@headlessui/react** | Unstyled, accessible UI components | 1.6.5 |
-| **React DnD (Native HTML5)** | Drag-and-drop functionality | Native API |
+| Technology                   | Purpose                                       | Version    |
+| ---------------------------- | --------------------------------------------- | ---------- |
+| **React**                    | UI framework for component-based architecture | 18.0.0     |
+| **Tailwind CSS**             | Utility-first CSS framework for rapid styling | 3.0.24     |
+| **Material-UI**              | Component library for polished UI elements    | 5.6.3      |
+| **Formik**                   | Form state management and validation          | 2.2.9      |
+| **Yup**                      | Schema-based validation                       | 0.32.11    |
+| **@headlessui/react**        | Unstyled, accessible UI components            | 1.6.5      |
+| **React DnD (Native HTML5)** | Drag-and-drop functionality                   | Native API |
 
 ---
 
@@ -66,12 +66,14 @@ Crema Task Manager is an interactive web application that helps teams organize a
 ### Installation Steps
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/LucasBrinton1/crema-task-manager.git
    cd crema-task-manager
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    # or
@@ -79,6 +81,7 @@ Crema Task Manager is an interactive web application that helps teams organize a
    ```
 
 3. **Start the development server**
+
    ```bash
    npm start
    # or
@@ -86,7 +89,7 @@ Crema Task Manager is an interactive web application that helps teams organize a
    ```
 
 4. **Open in browser**
-   
+
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ### Available Scripts
@@ -156,6 +159,7 @@ const [localTasks, setLocalTasks] = useLocalStorage("localTasks", tasks);
 ### Drag-and-Drop Implementation
 
 Uses the native HTML5 Drag and Drop API rather than external libraries, demonstrating:
+
 - Understanding of browser APIs
 - Event handler management (`onDragStart`, `onDragOver`, `onDrop`)
 - Data transfer between components
@@ -178,6 +182,7 @@ Uses the native HTML5 Drag and Drop API rather than external libraries, demonstr
 This project showcases my growth as a developer:
 
 ### Original Implementation (2022 - Junior Level)
+
 - ✅ Basic React component structure
 - ✅ State management fundamentals
 - ✅ Third-party library integration
@@ -186,6 +191,7 @@ This project showcases my growth as a developer:
 - ⚠️ Some unused/dead code
 
 ### 2026 Refactor (Senior Level)
+
 - ✅ **Professional Code Documentation**: JSDoc comments explaining complex logic
 - ✅ **Code Quality Tools**: ESLint + Prettier configuration for team consistency
 - ✅ **Best Practices**: DRY principles, proper import organization, semantic naming
@@ -210,6 +216,7 @@ This project showcases my growth as a developer:
 ### Deploy to Netlify
 
 1. Build the project:
+
    ```bash
    npm run build
    ```
@@ -245,7 +252,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 [![Twitter](https://img.shields.io/badge/Twitter-@LucasBrinton1-1da1f2.svg)](https://twitter.com/LucasBrinton1)  
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Lucas_Brinton-0077b5.svg)](https://linkedin.com/in/lucasbrinton)
 
-*Originally built in 2022 during early career stages. Updated in January 2026 to showcase professional development practices and code quality standards suitable for senior frontend engineering roles.*
+_Originally built in 2022 during early career stages. Updated in January 2026 to showcase professional development practices and code quality standards suitable for senior frontend engineering roles._
 
 ---
 

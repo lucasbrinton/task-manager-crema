@@ -17,11 +17,11 @@ function getStorageValue(key, defaultValue) {
 /**
  * Custom hook for persisting state to localStorage.
  * Synchronizes component state with localStorage, ensuring data persists across sessions.
- * 
+ *
  * @param {string} key - The localStorage key to use
  * @param {*} defaultValue - Initial value if no stored value exists
  * @returns {[*, Function]} Tuple of [value, setValue] similar to useState
- * 
+ *
  * @example
  * const [tasks, setTasks] = useLocalStorage("tasks", []);
  */

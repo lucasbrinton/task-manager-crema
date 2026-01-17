@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useField } from "formik";
+import "@material-tailwind/react/tailwind.css";
 import {
   Checkbox,
   FormControlLabel,
@@ -7,16 +6,16 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
+import { useField } from "formik";
+import { useEffect, useState } from "react";
 import * as yup from "yup";
-import "@material-tailwind/react/tailwind.css";
 
-import { EditTask } from "./components/task/EditTask";
-import { Task } from "./components/task/Task";
 import { Header } from "./components/header/header";
-import { MembersEditor } from "./components/membersEditor/membersEditor";
 import { NavBar } from "./components/navbar/navBar";
 import { NewMemberWindow } from "./components/newMemberWindow/newMemberWindow";
 import { NewTaskWindow } from "./components/newTaskWindow/newTaskWindow";
+import { EditTask } from "./components/task/EditTask";
+import { Task } from "./components/task/Task";
 import { getMemberById, topicColor } from "./components/utils";
 import { members, tasks, topics } from "./mockData";
 import { useLocalStorage } from "./useLocalStorage";
@@ -87,7 +86,7 @@ export const memberSchema = yup.object().shape({
  * Main App component that manages task board with drag-and-drop functionality.
  * Implements a Kanban-style board where tasks can be organized across different topics/columns.
  * Persists data to localStorage for state management across sessions.
- * 
+ *
  * @returns {JSX.Element} The main application component
  */
 function App() {
