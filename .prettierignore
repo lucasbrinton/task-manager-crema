@@ -1,0 +1,16 @@
+# Dependencies
+node_modules
+
+# Production
+build
+dist
+
+# Misc
+.DS_Store
+*.log
+coverage
+.git
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

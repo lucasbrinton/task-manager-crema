@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useField } from "formik";
 import {
   Checkbox,
@@ -9,28 +9,49 @@ import {
 } from "@mui/material";
 import * as yup from "yup";
 import "@material-tailwind/react/tailwind.css";
-import { members, tasks, topics } from "./mockData";
-import { topicColor, getMemberById } from "./components/utils";
-import { Task } from "./components/task/Task";
-import { useLocalStorage } from "./useLocalStorage";
-import { NewTaskWindow } from "./components/newTaskWindow/newTaskWindow";
-import { NewMemberWindow } from "./components/newMemberWindow/newMemberWindow";
-import { NavBar } from "./components/navbar/navBar";
-import { Header } from "./components/header/header";
+
 import { EditTask } from "./components/task/EditTask";
+import { Task } from "./components/task/Task";
+import { Header } from "./components/header/header";
+import { MembersEditor } from "./components/membersEditor/membersEditor";
+import { NavBar } from "./components/navbar/navBar";
+import { NewMemberWindow } from "./components/newMemberWindow/newMemberWindow";
+import { NewTaskWindow } from "./components/newTaskWindow/newTaskWindow";
+import { getMemberById, topicColor } from "./components/utils";
+import { members, tasks, topics } from "./mockData";
+import { useLocalStorage } from "./useLocalStorage";
 
 export const uniqueTypes = [...new Set(tasks.map((item) => item.type))];
 
+/**
+ * Custom Material-UI Radio component integrated with Formik.
+ * @param {Object} props - Component props
+ * @param {string} props.label - Label text for the radio button
+ * @returns {JSX.Element} Formik-controlled radio button
+ */
 export const MyRadio = ({ label, ...props }) => {
   const [field] = useField(props);
   return <FormControlLabel {...field} control={<Radio />} label={label} />;
 };
 
+/**
+ * Custom Material-UI Checkbox component integrated with Formik.
+ * @param {Object} props - Component props
+ * @param {string} props.label - Label text for the checkbox
+ * @returns {JSX.Element} Formik-controlled checkbox
+ */
 export const MyCheckBox = ({ label, ...props }) => {
   const [field] = useField(props);
   return <FormControlLabel {...field} control={<Checkbox />} label={label} />;
 };
 
+/**
+ * Custom Material-UI TextField component integrated with Formik validation.
+ * @param {Object} props - Component props
+ * @param {string} props.label - Label text for the input field
+ * @param {string} props.placeholder - Placeholder text
+ * @returns {JSX.Element} Formik-controlled text field with error handling
+ */
 export const MyTextField = ({ label, placeholder, ...props }) => {
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : "";
@@ -46,6 +67,10 @@ export const MyTextField = ({ label, placeholder, ...props }) => {
   );
 };
 
+/**
+ * Yup validation schema for member creation.
+ * Validates name length and email format.
+ */
 export const memberSchema = yup.object().shape({
   name: yup
     .string()
@@ -58,10 +83,13 @@ export const memberSchema = yup.object().shape({
     .required("An email address is required!"),
 });
 
-//  ========================================================================================================================================================================================================================
-//  ========================================================================================================================================================================================================================
-//  ========================================================================================================================================================================================================================
-
+/**
+ * Main App component that manages task board with drag-and-drop functionality.
+ * Implements a Kanban-style board where tasks can be organized across different topics/columns.
+ * Persists data to localStorage for state management across sessions.
+ * 
+ * @returns {JSX.Element} The main application component
+ */
 function App() {
   const [showModalTask, setShowModalTask] = useState(false);
   const [showModalMember, setShowModalMember] = useState(false);
@@ -73,6 +101,11 @@ function App() {
   );
   const [selectedTask, setSelectedTask] = useState(null);
 
+  /**
+   * Groups tasks by their topic/column for organized display.
+   * @param {Array} tasks - Array of task objects
+   * @returns {Object} Object with topic IDs as keys and arrays of tasks as values
+   */
   const groupTasksByTopic = (tasks) => {
     const topics = tasks.reduce((prev, next) => {
       prev[next.topic] = prev[next.topic]
@@ -83,35 +116,10 @@ function App() {
     return topics;
   };
 
-  // const handleCommentSubmit = (id) => {
-  // console.log("Submitted commentValue: ", commentValue, " Task ID: ", id);
-  // const tempLocalTasks = [...localTasks].map((task) => {
-  //   if (task.id === id) {
-  //     return {
-  //       ...task,
-  //       comments: [
-  //         ...task.comments,
-  //         {
-  //           message: commentValue,
-  //           owner: "user8",
-  //         },
-  //       ],
-  //     };
-  //   }
-  //   return task;
-  // });
-  // setLocalTasks(tempLocalTasks);
-  // };
-
-  // function showTaskPreview(value) {
-  //   setShowModalTaskPreview(true);
-  //   previewTaskId = value;
-  //   let previewTask = localTasks.filter((task) => {
-  //     return previewTaskId === task.id ? task : null;
-  //   });
-  //   setPreviewTask(previewTask[0]);
-  // }
-
+  /**
+   * Generates a display string for additional members beyond the first 3.
+   * @returns {string|undefined} Comma-separated list of member names
+   */
   const additionalMembers = () => {
     let membersArray = [];
     let membersList;
@@ -124,20 +132,35 @@ function App() {
     return membersList;
   };
 
+  /**
+   * Generates a unique ID for new tasks based on the last task ID.
+   * @type {string}
+   */
   let lastTaskId = localTasks[localTasks.length - 1].id;
   let newTaskId = (parseInt(lastTaskId) + 1).toString();
 
+  /**
+   * Generates a unique ID for new members.
+   * @returns {string} New member ID in format "userX"
+   */
   const newMemberId = () => {
     let lastMemberId = localMembers.length;
     let newMemberId = ++lastMemberId;
     return "user" + newMemberId;
   };
 
-  const onDragOver = (evt, data) => {
+  /**
+   * Handler for drag over event (required to enable drop).
+   * @param {DragEvent} evt - The drag event
+   */
+  const onDragOver = (evt) => {
     evt.preventDefault();
-    // console.log("something was dragged over me", evt, data);
   };
 
+  /**
+   * Effect hook to hydrate task owners and comments with full member objects.
+   * Runs whenever localTasks or localMembers change to keep data in sync.
+   */
   useEffect(() => {
     const tasks = localTasks.map((task) => {
       const owners = task.owners.map((owner) => {
@@ -168,6 +191,12 @@ function App() {
     setTasksByTopic(groupTasksByTopic(tasks));
   }, [localTasks, localMembers]);
 
+  /**
+   * Handler for dropping a task into a new topic/column.
+   * Updates the task's topic and persists to localStorage.
+   * @param {DragEvent} evt - The drop event
+   * @param {string} toTopic - Target topic ID where the task is being dropped
+   */
   const onDrop = (evt, toTopic) => {
     evt.preventDefault();
     const ticketId = evt.dataTransfer.getData("ticketId");
@@ -182,6 +211,10 @@ function App() {
     setLocalTasks(newTasksAfterDrop);
   };
 
+  /**
+   * Finds and sets the selected task for editing.
+   * @param {string} id - The ID of the task to edit
+   */
   const onClickEditTask = (id) => {
     let foundTask = null;
 
@@ -199,8 +232,10 @@ function App() {
     setSelectedTask(foundTask);
   };
 
+  /**
+   * Closes the edit task modal and clears the selected task.
+   */
   const onClickEditTaskClose = () => {
-    console.log("Edit Task Modal has been closed");
     setSelectedTask(null);
   };
 

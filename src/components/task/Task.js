@@ -1,12 +1,36 @@
-import { taskPriority } from "../utils";
-import { Tooltip, Zoom } from "@mui/material";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
+import { Tooltip, Zoom } from "@mui/material";
 
+import { taskPriority } from "../utils";
+
+/**
+ * Utility function to conditionally join CSS class names.
+ * @param {...string} classes - Class names to join
+ * @returns {string} Joined class names
+ */
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(" ");
 };
 
+/**
+ * Task card component with drag-and-drop support and edit/delete functionality.
+ * Displays task information including title, type, priority, description, comments, and assigned members.
+ * 
+ * @param {Object} props - Component props
+ * @param {string} props.id - Unique task identifier
+ * @param {string} props.type - Task type (e.g., "Design", "Development")
+ * @param {string} props.title - Task title
+ * @param {Array} props.owners - Array of member objects assigned to the task
+ * @param {string} props.priority - Task priority level ("Low", "Normal", "High")
+ * @param {string} props.topic - Topic/column ID where task is located
+ * @param {string} props.description - Full task description
+ * @param {Array} props.comments - Array of comment objects
+ * @param {Array} props.localTasks - All tasks in the system
+ * @param {Function} props.onChange - Callback when task list changes
+ * @param {Function} props.clickedTaskId - Callback when task is clicked for editing
+ * @returns {JSX.Element} Task card component
+ */
 export const Task = ({
   id,
   type = "Design",
@@ -20,6 +44,10 @@ export const Task = ({
   onChange,
   clickedTaskId,
 }) => {
+  /**
+   * Generates a display string for additional members beyond the first 3.
+   * @returns {string|undefined} Comma-separated list of member names
+   */
   const additionalMembers = () => {
     let membersArray = [];
     let membersList;
@@ -32,17 +60,29 @@ export const Task = ({
     return membersList;
   };
 
+  /**
+   * Deletes a task from the task list.
+   * @param {string} id - Task ID to delete
+   */
   const deleteTask = (id) => {
     const result = localTasks.filter((task) => task.id !== id);
     onChange(result);
   };
 
+  /**
+   * Triggers the edit task callback with the task ID.
+   * @param {string} id - Task ID to edit
+   */
   const getTaskId = (id) => {
     clickedTaskId(id);
   };
 
+  /**
+   * Handler for drag start event. Sets drag data for drag-and-drop functionality.
+   * @param {DragEvent} evt - The drag event
+   * @param {Object} data - Data containing fromTopic and ticketId
+   */
   const onDragStart = (evt, data) => {
-    console.log("Starting to drag", evt, data);
     evt.dataTransfer.setData("fromTopic", data.fromTopic);
     evt.dataTransfer.setData("ticketId", data.ticketId);
   };

@@ -1,5 +1,11 @@
 import { Tooltip, Zoom } from "@mui/material";
 
+/**
+ * Navigation bar component displayed at the top of the application.
+ * Shows the application branding and user profile picture.
+ * 
+ * @returns {JSX.Element} Navigation bar with logo and profile
+ */
 export const NavBar = () => {
   return (
     <nav className="bg-gray-800 flex h-16 items-center">
